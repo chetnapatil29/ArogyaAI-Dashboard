@@ -1,0 +1,132 @@
+import React, { useState } from 'react';
+import './App.css';
+
+export default function App() {
+  const [habits, setHabits] = useState([
+    { id: 1, name: "Morning Medication (Aspirin/Metformin)", completed: true, time: "08:00 AM" },
+    { id: 2, name: "Hydration Check (Drink 500ml Water)", completed: false, time: "12:30 PM" },
+    { id: 3, name: "Post-Lunch Brief Walking Routine", completed: false, time: "02:00 PM" },
+    { id: 4, name: "Evening Mindfulness & Deep Breathing", completed: false, time: "08:30 PM" },
+  ]);
+
+  const [adherenceRate, setAdherenceRate] = useState(85);
+
+  const toggleHabit = (id) => {
+    setHabits(habits.map(habit => {
+      if (habit.id === id) {
+        const updatedStatus = !habit.completed;
+        setAdherenceRate(prev => updatedStatus ? Math.min(prev + 5, 100) : Math.max(prev - 5, 0));
+        return { ...habit, completed: updatedStatus };
+      }
+      return habit;
+    }));
+  };
+
+  return (
+    <div className="min-h-screen bg-zinc-900 text-zinc-100 font-sans p-6 flex flex-col items-center justify-start">
+      
+      <header className="w-full max-w-7xl flex items-center justify-between border-b border-zinc-800 pb-4 mb-6">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">✨</span>
+          <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+            ArogyaAI Portal
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 bg-emerald-950/40 border border-emerald-800/60 px-3 py-1.5 rounded-full text-xs text-emerald-400 font-medium">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          SDG 3 Workspace Active
+        </div>
+      </header>
+
+      <main className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          
+          <div className="bg-zinc-800/50 border border-zinc-800 p-6 rounded-2xl flex flex-col items-center text-center shadow-sm">
+            <h3 className="text-zinc-400 font-medium text-xs uppercase tracking-wider mb-2">
+              Health Adherence Score
+            </h3>
+            <p className="text-5xl font-extrabold text-emerald-400 tracking-tight my-2">
+              {adherenceRate}%
+            </p>
+            <div className="w-full bg-zinc-700 rounded-full h-2 mt-2 mb-4 overflow-hidden">
+              <div 
+                className="bg-emerald-400 h-2 rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${adherenceRate}%` }}
+              ></div>
+            </div>
+          </div>
+
+          <section className="bg-zinc-800/30 border border-zinc-800 p-6 rounded-2xl shadow-sm flex-1">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-zinc-100">Today's Preventive Care Plan</h2>
+              <span className="text-xs bg-zinc-800 border border-zinc-700 px-2.5 py-1 rounded-md text-emerald-400 font-semibold">
+                Interactive
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {habits.map((habit) => (
+                <div 
+                  key={habit.id}
+                  onClick={() => toggleHabit(habit.id)}
+                  className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none ${
+                    habit.completed 
+                      ? "bg-emerald-950/20 border-emerald-800/40 text-zinc-300" 
+                      : "bg-zinc-800/40 border-zinc-800 hover:border-zinc-700 text-zinc-100"
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`w-5 h-5 rounded-md flex items-center justify-center border ${
+                      habit.completed ? "bg-emerald-500 border-emerald-400 text-zinc-900" : "border-zinc-600"
+                    }`}>
+                      {habit.completed && (
+                        <svg className="w-3.5 h-3.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className={`text-sm font-medium ${habit.completed ? "line-through text-zinc-500" : ""}`}>
+                      {habit.name}
+                    </span>
+                  </div>
+                  <span className="text-xs font-mono bg-zinc-800/60 text-zinc-400 px-2 py-1 rounded-md border border-zinc-700/40">
+                    {habit.time}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div className="lg:col-span-1 bg-zinc-800/40 border border-zinc-800 rounded-2xl overflow-hidden flex flex-col h-[550px] shadow-lg">
+          <div className="p-4 bg-zinc-800 border-b border-zinc-700 flex items-center gap-2">
+            <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></div>
+            <h3 className="font-semibold text-sm text-zinc-200">ArogyaAI Live Medical Companion</h3>
+          </div>
+          
+          <div className="w-full flex-1 flex flex-col items-center justify-center p-6 text-center bg-zinc-900/60 gap-4 min-h-[350px]">
+            <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center text-3xl animate-bounce">
+              💬
+            </div>
+            <div>
+              <h4 className="font-semibold text-zinc-200 text-sm mb-1">ArogyaAI Agent Active</h4>
+              <p className="text-xs text-zinc-400 max-w-[220px] mx-auto leading-relaxed">
+                The medical companion is fully compiled and deployed via the cloud framework.
+              </p>
+            </div>
+            <a 
+              href="https://cdn.botpress.cloud/webchat/v3.0/shareable.html?botId=216345ec-4be4-43e4-8025-a130932204c8" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-zinc-950 font-bold px-5 py-2.5 rounded-xl text-xs tracking-wide font-medium transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-950/20"
+            >
+              Launch Live Assistant ↗
+            </a>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  );
+} 
